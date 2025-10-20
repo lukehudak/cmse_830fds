@@ -529,12 +529,6 @@ def interactive_analysis():
             title=f"Distribution of {dist_var.replace('_',' ').title()} by Region"
         )
         hist_fig.update_traces(opacity=0.8)
-        hist_fig.update_layout(
-            width=900,           
-            height=500,         
-            bargap=0.15,         
-            margin=dict(l=40, r=40, t=60, b=40)
-        )
         st.plotly_chart(hist_fig, use_container_width=True)
 
         box_df = filtered_df.dropna(subset=[dist_var])
