@@ -523,10 +523,8 @@ def interactive_analysis():
         hist_fig = px.histogram(
             hist_df,
             x=dist_var,
-            color="region",
             nbins=30,
-            color_discrete_sequence=px.colors.qualitative.Bold,
-            title=f"Distribution of {dist_var.replace('_',' ').title()} by Region"
+            title=f"Distribution of {dist_var.replace('_',' ').title()}"
         )
         hist_fig.update_traces(opacity=0.8)
         st.plotly_chart(hist_fig, use_container_width=True)
