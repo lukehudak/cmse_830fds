@@ -523,7 +523,7 @@ def interactive_analysis():
         hist_fig = px.histogram(
             hist_df,
             x=dist_var,
-            nbins=30,
+            nbins=50,
             title=f"Distribution of {dist_var.replace('_',' ').title()}"
         )
         hist_fig.update_traces(opacity=0.8)
