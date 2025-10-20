@@ -14,10 +14,15 @@ import plotly.express as px
 # ---------------------------
 # Load Data
 # ---------------------------
-life_exp_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Life-Expectancy-Data-Updated.csv")
-gov_metrics_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/World_Bank_data.csv")
-encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/encoded_df.csv")
-merged_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/merged_df.csv")
+#life_exp_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Life-Expectancy-Data-Updated.csv")
+#gov_metrics_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/World_Bank_data.csv")
+#encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/encoded_df.csv")
+#merged_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/merged_df.csv")
+
+life_exp_df = pd.read_csv("data/Life-Expectancy-Data-Updated.csv")
+gov_metrics_df = pd.read_csv("data/World_Bank_data.csv")
+encoded_df = pd.read_csv("data/encoded_df.csv")
+merged_df = pd.read_csv("data/merged_df.csv")
 
 # Make copies of imputed and median imputed dfs if needed
 imputed_df = encoded_df.copy()
