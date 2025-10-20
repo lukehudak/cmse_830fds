@@ -6,13 +6,12 @@ This project explores the relationship between government expenditures and popul
 
 GitHub Organization:
 
-├── data/  
-│   ├── Life-Expectancy-Data-Updated.csv   # Life expectancy data from Kaggle  
-│   ├── World_Bank_data.csv                # Government expenditure data from the World Bank  
-│   ├── encoded_df.csv                     # Cleaned and encoded dataset used for analysis  
-│   ├── merged_df.csv                      # Final merged dataset combining health and expenditure data  
-│
-├── CMSE830.Project_Code.ipynb             # Jupyter Notebook with analysis, cleaning, and EDA  
-├── streamlit_app.py                       # Streamlit dashboard for interactive exploration  
-├── requirements.txt                       # List of Python dependencies  
-├── README.md                              # Project overview and setup guide (this file)  
+- data/ – Contains all datasets used in the project:
+  - Life-Expectancy-Data-Updated.csv – Life expectancy data from Kaggle
+  - World_Bank_data.csv – Government expenditure data from the World Bank
+  - encoded_df.csv – Cleaned and encoded dataset
+  - merged_df.csv – Combined dataset used for analysis
+- CMSE830.Project_Code.ipynb – Jupyter Notebook with data processing and exploratory analysis
+- streamlit_app.py – Streamlit app for interactive data exploration
+- requirements.txt – List of required Python libraries
+- README.md – Project overview and setup instructions 
