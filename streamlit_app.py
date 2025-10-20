@@ -19,10 +19,21 @@ import plotly.express as px
 #encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/encoded_df.csv")
 #merged_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/merged_df.csv")
 
-life_exp_df = pd.read_csv("data/Life-Expectancy-Data-Updated.csv")
-gov_metrics_df = pd.read_csv("data/World_Bank_data.csv")
-encoded_df = pd.read_csv("data/encoded_df.csv")
-merged_df = pd.read_csv("data/merged_df.csv")
+#life_exp_df = pd.read_csv("data/Life-Expectancy-Data-Updated.csv")
+#gov_metrics_df = pd.read_csv("data/World_Bank_data.csv")
+#encoded_df = pd.read_csv("data/encoded_df.csv")
+#merged_df = pd.read_csv("data/merged_df.csv")
+
+life_exp_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/Life-Expectancy-Data-Updated.csv"
+gov_metrics_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/World_Bank_data.csv"
+encoded_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/encoded_df.csv"
+merged_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/merged_df.csv"
+
+# Load CSVs from GitHub
+life_exp_df = pd.read_csv(life_exp_url)
+gov_metrics_df = pd.read_csv(gov_metrics_url)
+encoded_df = pd.read_csv(encoded_df_url)
+merged_df = pd.read_csv(merged_df_url)
 
 # Make copies of imputed and median imputed dfs if needed
 imputed_df = encoded_df.copy()
