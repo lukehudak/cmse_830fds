@@ -12,6 +12,10 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LinearRegression
 import plotly.express as px
 
+'''
+NOTE: This app is still a work in progress and is not the final product
+'''
+
 # ---------------------------
 # Load Data
 # ---------------------------
