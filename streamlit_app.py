@@ -32,7 +32,7 @@ life_exp_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/dat
 gov_metrics_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/World_Bank_data.csv"
 encoded_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/encoded_df.csv"
 merged_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/merged_df.csv"
-final_merged_df_url= "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/final_merged_df.csv"
+final_merged_df_url= "https://github.com/lukehudak/cmse_830fds/blob/main/data/final_meged_df.csv"
 df_imputed_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/df_imputed.csv"
 
 #Load CSVs from GitHub
