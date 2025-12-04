@@ -1,8 +1,9 @@
-# streamlit_app.py
+# final_streamlit_app.py
 # CMSE 830 Midsemester Project Streamlit App
 # Generated with the help of ChatGPT (version 5-mini) 2025-10-19
 
 import streamlit as st
+st.set_page_config(page_title="Health Data Project", layout="wide")
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -18,6 +19,9 @@ import plotly.express as px
 #gov_metrics_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/World_Bank_data.csv")
 #encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/encoded_df.csv")
 #merged_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/merged_df.csv")
+#final_merged_df =pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/final_meged_df.csv")
+#df_imputed =pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/df_imputed.csv")
+
 
 #life_exp_df = pd.read_csv("data/Life-Expectancy-Data-Updated.csv")
 #gov_metrics_df = pd.read_csv("data/World_Bank_data.csv")
@@ -28,12 +32,16 @@ life_exp_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/dat
 gov_metrics_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/World_Bank_data.csv"
 encoded_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/encoded_df.csv"
 merged_df_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/merged_df.csv"
+final_merged_df_url= "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/final_merged_df.csv"
+df_imputed_url = "https://raw.githubusercontent.com/lukehudak/cmse_830fds/main/data/df_imputed.csv"
 
-# Load CSVs from GitHub
+#Load CSVs from GitHub
 life_exp_df = pd.read_csv(life_exp_url)
 gov_metrics_df = pd.read_csv(gov_metrics_url)
 encoded_df = pd.read_csv(encoded_df_url)
 merged_df = pd.read_csv(merged_df_url)
+final_merged_df = pd.read_csv(final_merged_df_url)
+df_imputed = pd.read_csv(df_imputed_url)
 
 # Make copies of imputed and median imputed dfs if needed
 imputed_df = encoded_df.copy()
@@ -42,7 +50,7 @@ median_imputed_df = imputed_df.copy()  # If needed for visualization comparison
 # ---------------------------
 # Page Setup
 # ---------------------------
-st.set_page_config(page_title="Health Data Project", layout="wide")
+#st.set_page_config(page_title="Health Data Project", layout="wide")
 st.sidebar.title("Navigation")
 pages = [
     "Project Overview",
@@ -50,6 +58,7 @@ pages = [
     "Data Processing",
     "Exploratory Data Analysis",
     "Interactive Analysis",
+    "Modeling",  # <-- interactive modeling page
     "Summary / Conclusion"
 ]
 selection = st.sidebar.radio("Select Page:", pages)
@@ -79,30 +88,40 @@ def project_overview():
 
     col2.markdown("### 2️⃣ Data Processing")
     col2.markdown("""
-    - Handle missing values (stochastic regression & median imputation)
-    - Encode categorical variables (one-hot encoding for "region")
-    - Ensure numeric data ready for analysis
+    - Handle missing values using stochastic regression & median imputation
+    - Encode categorical variables (one-hot encoding for 'region')
+    - Scale numeric data for analysis
     """)
 
     col3.markdown("### 3️⃣ Analysis & EDA")
     col3.markdown("""
     - Explore distributions, correlations, and relationships
-    - Identify trends and patterns across countries and regions
-    - Prepare for interactive visualization
+    - Perform **Principal Component Analysis (PCA)** to reduce dimensionality and summarize key patterns
+    - Prepare data for interactive visualization and modeling
+    """)
+
+    st.markdown("---")
+    st.subheader("Predictive Modeling")
+    st.markdown("""
+    - Built **Linear Regression** and **Random Forest** models to predict life expectancy
+    - Linear Regression highlights linear effects of key variables (physicians, BMI, hospital beds, government health expenditure)
+    - Random Forest identifies non-linear interactions, with under-five deaths and adult mortality as strongest predictors
+    - Model insights inform understanding of which factors most influence population health
     """)
 
     st.markdown("---")
     st.subheader("Interactive Exploration")
     st.markdown("""
-    - Users can select regions and variables to generate different interactive visualizations and further explore the data.
+    - Users can select regions and variables to generate interactive visualizations and explore trends, distributions, and relationships in the dataset.
     """)
     
     st.subheader("Summary & Recommendations")
     st.markdown("""
-    - Key Findings
-    - Next Steps
-    - Importance
+    - Key Findings: Life expectancy positively related to government expenditures, mortality indicators critical
+    - Next Steps: Extend modeling, explore additional health/socioeconomic indicators
+    - Importance: Insights support evidence-based policy decisions for improving population health
     """)
+
 
 
 # ---------------------------
@@ -664,35 +683,157 @@ def interactive_analysis():
         )
         st.plotly_chart(map_fig, use_container_width=True)
 
+# ---------------------------
+# Page 7: Interactive Modeling
+# ---------------------------
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+# ---------------------------
+# Page 7: Predictive Modeling
+# ---------------------------
+def modeling_page():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from sklearn.linear_model import LinearRegression
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import mean_squared_error, r2_score
+
+    st.title("🤖 Predictive Modeling of Life Expectancy")
+    st.markdown("""
+    Explore predictive models for life expectancy using numeric government expenditure and health indicators.
+    """)
+
+    # --- 1. Define predictors and target ---
+    X = df_imputed.drop(columns=['life_expectancy'])
+    y = df_imputed['life_expectancy']
+
+    # Select only numeric columns
+    numeric_cols = X.select_dtypes(include=[np.number]).columns.tolist()
+    X = X[numeric_cols]
+
+    # --- 2. Train/test split ---
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # --- 3. Model selection ---
+    model_choice = st.radio(
+        "Select model to visualize:",
+        options=["Linear Regression", "Random Forest"]
+    )
+
+    if model_choice == "Linear Regression":
+        # --- Linear Regression ---
+        lr = LinearRegression()
+        lr.fit(X_train, y_train)
+        y_pred = lr.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+        st.subheader("Linear Regression Results")
+        st.markdown(f"**R²:** {r2:.3f}  |  **RMSE:** {rmse:.3f}")
+
+        # --- Coefficients ---
+        coefficients = pd.DataFrame({
+            'Variable': X.columns,
+            'Coefficient': lr.coef_
+        })
+        coefficients["abs_coef"] = coefficients["Coefficient"].abs()
+        coefficients_sorted = coefficients.sort_values("abs_coef", ascending=True)
+
+        # --- Plot ---
+        plt.figure(figsize=(12,8))
+        colors = np.where(coefficients_sorted["Coefficient"] > 0, 'skyblue', 'salmon')
+        plt.barh(coefficients_sorted["Variable"], coefficients_sorted["Coefficient"], color=colors)
+        plt.axvline(0, color='grey', linestyle='--', linewidth=1)
+        plt.xlabel("Coefficient")
+        plt.title("Linear Regression Coefficients")
+        plt.tight_layout()
+        st.pyplot(plt.gcf())
+
+    else:
+        # --- Random Forest ---
+        rf = RandomForestRegressor(n_estimators=200, random_state=42)
+        rf.fit(X_train, y_train)
+        y_pred = rf.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+        st.subheader("Random Forest Regression Results")
+        st.markdown(f"**R²:** {r2:.3f}  |  **RMSE:** {rmse:.3f}")
+
+        # --- Feature importances ---
+        importances = pd.DataFrame({
+            'Variable': X.columns,
+            'Importance': rf.feature_importances_
+        })
+        importances_sorted = importances.sort_values("Importance", ascending=True)
+
+        plt.figure(figsize=(12,8))
+        plt.barh(importances_sorted["Variable"], importances_sorted["Importance"], color='skyblue')
+        plt.xlabel("Importance")
+        plt.xscale('log')
+        plt.title("Random Forest Feature Importance")
+        plt.tight_layout()
+        st.pyplot(plt.gcf())
+
 
 
 # ---------------------------
 # Page 6: Summary / Conclusion
 # ---------------------------
+# ---------------------------
+# Page 6: Summary / Conclusion
+# ---------------------------
 def summary_conclusion():
-    st.title("Summary")
-    st.markdown("Key findings and next steps.")
+    st.title("Summary & Modeling Insights")
+    st.markdown("This page summarizes key findings from the project, including predictive modeling results and actionable insights.")
 
+    # ---------------------------
     st.subheader("Key Findings")
     st.markdown("""
-        - **Life expectancy shows moderate positive relationships with government expenditure (health, education, and r&d).**
-                
+        - **Life expectancy shows moderate positive relationships with government expenditure** (health, education, and R&D).  
         - Regions differ greatly in health expenditure and health outcomes.  
-        - Using stochastic regression method for imputation proved more effective than median imputation.
-        """)
+        - **Stochastic regression imputation** was more effective than median imputation for missing values.
+        - **Linear Regression** identified physician density, BMI, hospital beds, and government health expenditure as significant predictors of life expectancy.
+        - **Random Forest** highlighted **under-five deaths** and **adult mortality** as the most important predictors, indicating that observed mortality rates dominate predictions when non-linear interactions are considered.
+    """)
 
+    # ---------------------------
+    st.subheader("Model Performance")
+    st.markdown("""
+        **Linear Regression:**  
+        - R² = 0.983, RMSE = 1.502  
+        - Captures strong linear relationships between predictors and life expectancy.
+
+        **Random Forest:**  
+        - Emphasizes the predictive power of mortality indicators over direct expenditure metrics.
+    """)
+
+    # ---------------------------
     st.subheader("Next Steps")
     st.markdown("""
-        - Further examine country-level trends in data.
-        - Add more health and socio-economic indicators to dataset to further analyze the role that individual governments play on the health of their citizens.
-        - Explore predictive modeling for health outcomes.  
-        """)
+        - Further examine country-level trends in the data.  
+        - Add more health and socio-economic indicators to assess government impact on citizen health.  
+        - Explore additional predictive modeling approaches and interactions.
+    """)
+
+    # ---------------------------
     st.subheader("Importance")
     st.markdown("""
-    - This project explores the relationship between government expenditure and citizen health, revealing insights into the effectiveness of public spending.  
-    - Helps understand how government investment in sectors like health, education, and R&D impacts overall population health.  
-    - Provides evidence that can guide policymakers in making informed decisions to improve the health and well-being of citizens.  
-""")
+        - Understanding how government investment in health, education, and R&D affects population health can guide policy decisions.  
+        - Mortality and health system indicators both play key roles in shaping life expectancy outcomes.  
+        - Insights from both linear and non-linear models highlight areas where interventions may be most effective.
+    """)
+
 
 
 # ---------------------------
@@ -704,6 +845,7 @@ page_routes = {
     "Data Processing": data_processing,
     "Exploratory Data Analysis": eda,
     "Interactive Analysis": interactive_analysis,
+    "Modeling": modeling_page,
     "Summary / Conclusion": summary_conclusion
 }
 
