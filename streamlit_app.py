@@ -40,7 +40,8 @@ life_exp_df = pd.read_csv(life_exp_url)
 gov_metrics_df = pd.read_csv(gov_metrics_url)
 encoded_df = pd.read_csv(encoded_df_url)
 merged_df = pd.read_csv(merged_df_url)
-final_merged_df = pd.read_csv(final_merged_df_url, engine='python')
+final_merged_df = pd.read_csv(final_merged_df_url, on_bad_lines='skip', quotechar='"')
+
 df_imputed = pd.read_csv(df_imputed_url)
 
 # Make copies of imputed and median imputed dfs if needed
