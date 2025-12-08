@@ -1,5 +1,5 @@
 # cmse_830fds
-Mid semester Project README File
+Final Project README File
 
 **Project Overview**
 This project explores the relationship between government expenditures and population health across countries and years. The process included data collection from Kaggle and the World Bank and other sources. Processing to handle missing values and encode categorical variables, exploratory data analysis to uncover trends and patterns, principle component analysis and predictive modeling were all conducted. The app provides an overview of this process and provides interactive visualizations for users to explore the data by region and variable along with an interactive scenario section. Key findings, insights, and recommendations are summarized to guide further analysis and decision-making.
