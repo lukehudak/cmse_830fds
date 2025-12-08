@@ -482,10 +482,10 @@ def eda_model_results_page():
             """
             This section summarizes the main exploratory analyses used in the project:
 
-            - **Summary statistics** to understand typical values and spread  
+            - **Summary statistics** to understand typical values and other descriptive stats 
             - **Distributions and boxplots** to see distribution, outliers, and regional differences  
             - **Correlation** to see how key variables are related 
-            - **PCA** to reduce dimensionality and identify dominant patterns across many variables  
+            - **PCA** to reduce dimensionality and identify patterns across many variables  
             """
         )
 
@@ -611,9 +611,9 @@ def eda_model_results_page():
 
             st.markdown(
                 """
-                PCA is used to **summarize variation across many correlated predictors** into a smaller
-                number of components, and to visualize how variables and observations relate in a reduced
-                dimensional space.
+                PCA is used to **summarize variation across correlated predictors** into a smaller
+                number of components, and to visualize how variables and observations relate in reduced
+                dimensionality.
 
                 The two plots below are taken directly from the analysis notebook:
                 - A **scree plot**, showing how much variance each principal component explains  
@@ -716,7 +716,7 @@ def interactive_page():
 
     st.markdown(
         """
-        This page is designed as a **playground** for exploring the data and models:
+        This page is designed as an **interactive playground** for exploring the data and models:
 
         - **Interactive EDA:** filter by region/country and explore distributions, relationships, and maps  
         - **Scenario Simulator:** adjust key variables and see how the **Linear Regression** model's
@@ -969,7 +969,7 @@ def interactive_page():
 
         st.markdown(
             """
-            This tool uses the **Linear Regression** model to explore *what might happen* to
+            This tool uses the **Linear Regression** model to explore what could happen to
             predicted life expectancy under different conditions.
 
             1. Choose a **baseline country and year**  
@@ -1146,17 +1146,17 @@ def importance_conclusion():
         """
         The EDA highlighted several strong and consistent patterns across countries:
 
-        **1. Mortality indicators dominate the life expectancy landscape**  
-        - Countries with high *infant deaths*, *under–five mortality*, and *adult mortality* show sharply lower life expectancy.  
+        **1. Mortality indicators play a large role in predicting life expectancy**  
+        - Countries with high *infant deaths*, *under–five mortality*, and *adult mortality* show lower life expectancy.  
         - These relationships are strong, stable, and visible in both correlations and scatter plots.
 
         **2. Economic conditions and government investment matter**  
-        - Higher **GDP per capita** and **government health expenditure** tend to align with higher life expectancy.  
+        - Higher **GDP per capita** and **government health expenditure** tend to go with higher life expectancy.  
         - Access to safe water and stronger health infrastructure (physicians, nurses, hospital beds) are also linked to better health outcomes.
 
         **3. PCA revealed broad global patterns**  
-        - One major dimension reflects a **wealth & resources gradient**, where wealthier nations cluster with higher health spending, more infrastructure, and longer lives.  
-        - A second dimension relates to **disease burden and environmental factors**, separating high-mortality, low-access regions from the rest.
+        - One major dimension likely reflects a **wealth & resources factors**, where wealthier nations cluster with higher health spending, more infrastructure, and longer lives.  
+        - A second dimension likely relates to **disease burden and environmental factors**, separating high-mortality, low-access regions from the rest.
 
         Overall, the EDA paints a consistent picture: health outcomes emerge from a combination of **economic capacity**, **public investment**, and **basic resource availability**.
         """
@@ -1172,17 +1172,20 @@ def importance_conclusion():
     st.markdown(
         """
         **1. Linear Regression**  
-        - Provided clear, interpretable relationships.  
+        - Test R² of 0.983 and RMSE of 1.19 (average prediction was off by roughly 1.2 years)
+        - Evaluation statsitics indicate an overall good fitting model with strong linear relationships.
         - Mortality variables showed the largest negative coefficients.  
-        - GDP per capita, safe water access, and government health spending showed positive associations with life expectancy.  
+        - Government health spending and access to safe water showed positive associations with life expectancy.  
         - Some vaccination or infrastructure variables occasionally showed unexpected signs, likely due to **multicollinearity** rather than true negative effects.
 
         **2. Random Forest**  
+        - Test R² of 0.996 and RMSE of 0.567
         - Achieved strong predictive performance with high R² and low RMSE.  
-        - Identified similar top predictors as Linear Regression, reinforcing the consistency of the findings: mortality indicators, GDP per capita, spending levels, and health system capacity.
+        - Mortality statistics were again the most impactful on the model.
+        - Does not assume linear realtionships, which likely allowed for more accurate prediction compared to linear regression.
 
         **3. Agreement between models**  
-        - Both models point to the same core drivers of life expectancy.  
+        - Both models point to the same core drivers of life expectancy (mortality, gdp, expenditure).  
         - This convergence increases confidence in the results.
         """
     )
@@ -1200,27 +1203,23 @@ def importance_conclusion():
 
         **1. Observational data cannot establish causation**  
         - All relationships identified are **associational**, not causal.  
-        - Factors like government spending, GDP, and health access may be influenced by deeper structural conditions not fully captured in the dataset.
+        - Factors like government spending, GDP, and health access may be influenced by other factors not fully captured in the dataset.
 
         **2. Missing data and imputation introduce uncertainty**  
-        - Some variables required substantial imputation (via MICE), which can smooth over true variability or introduce bias—especially for countries with limited reporting.  
+        - Some variables required substantial imputation (via MICE), which can smooth over true variability or introduce bias.  
         - Imputed values should be interpreted cautiously.
 
-        **3. Multicollinearity affects interpretability**  
+        **3. Multicollinearity**  
         - Many predictors are highly correlated (e.g., GDP, health spending, workforce capacity).  
         - Linear regression coefficients may not always reflect independent effects.
 
-        **4. Inconsistent reporting across countries**  
-        - Measurements vary in accuracy and reliability across sources and regions.  
-        - Some indicators (e.g., water access, health workforce) are updated infrequently.
+        **4. Reporting inconsistencies**  
+        - Measurements may vary in accuracy and reliability across sources and regions.  
+        - Some indicators (e.g., water access, health workforce) are updated less frequently than others.
 
-        **5. Models are not forecasts**  
-        - The models describe patterns in historical data, but they do not necessarily predict future life expectancy without accounting for time dynamics or policy changes.
-
-        Together, these limitations highlight the need for cautious interpretation and underscore that the results should serve as **contextual insights**, not definitive policy prescriptions.
+        Together, these limitations highlight the need for cautious interpretation. The results should serve as **contextual insights**, not definitive statements.
         """
     )
-
 
     st.markdown("---")
 
@@ -1233,15 +1232,15 @@ def importance_conclusion():
         """
         This project highlights several important themes for global health policy:
 
-        - **Investing in foundational public health resources—clean water, maternal & child health services, and primary care systems—has the biggest potential impact.**
+        - **Investing in public health resources and primary care systems could have a potentially large impact.**
 
-        - **Economic development and health investment go hand-in-hand.** Countries with more fiscal capacity tend to sustain stronger health systems.
+        - **Economic development and health investment are related** Countries with more money tend to have stronger health systems.
 
-        - **Mortality reduction remains the clearest pathway to improving life expectancy**, especially reductions in infant, child, and adult mortality.
+        - **Mortality reduction remains a clear pathway to improving life expectancy**.
 
-        - **Infrastructure and workforce capacity** (physicians, nurses, hospital beds) are essential to translating spending into real-world outcomes.
+        - **Infrastructure and workforce capacity** (physicians, nurses, hospital beds) are needed to translate spending into real-world outcomes.
 
-        These insights support the idea that improving life expectancy requires **both resources and efficient public investment**, not one or the other.
+        These insights highlight the idea that improving life expectancy requires **both resources and efficient public investment**.
         """
     )
 
@@ -1254,25 +1253,19 @@ def importance_conclusion():
 
     st.markdown(
         """
-        Several promising directions could expand or strengthen this work:
+        There are several ways in which this project could be built upon in the future:
 
-        **1. Time-lagged modeling**  
-        - Government spending in year *t* may influence outcomes in year *t+1* or later.  
-        - Incorporating lags would better capture real-world policy effects.
+        **1. Time-series analysis**  
+        - Government spending one year may influence outcomes in years later.  
+        - Incorporating lags could better capture real-world policy effects.
 
-        **2. Additional social determinants**  
-        - Inequality, education quality, environmental exposure, and political stability could deepen the analysis.
+        **2. Additional social indicators**  
+        - Inequality, education quality, environmental exposure, and political stability could further deepen the analysis.
 
-        **3. Forecasting models**  
-        - ARIMA, Prophet, or LSTM models could project future life expectancy under different investment scenarios.
+        **3. Country case studies**  
+        - Deeper dives into individual nations could potentially reveal insights not visible in global models.
 
-        **4. Causal inference approaches**  
-        - Techniques like DID, IV regression, or synthetic controls could help separate correlation from causation.
-
-        **5. Country case studies**  
-        - Deep dives into individual nations could reveal context-specific drivers not visible in global models.
-
-        Together, these extensions would strengthen the policy relevance and explanatory power of the analysis.
+        Together, these extensions could strengthen the power and relevance of the analysis.
         """
     )
 
