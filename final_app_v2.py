@@ -22,16 +22,27 @@ from sklearn.metrics import r2_score, mean_squared_error
 # Load Data
 # ---------------------------
 
-# Local paths (you can swap to URL version if you prefer)
-life_exp_df   = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/Life-Expectancy-Data-Updated.csv")
-gov_metrics_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/World_Bank_data.csv")
-healthcare_access_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/HealthcareAccess.csv")
-water_quality_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/WaterQuality.csv")
-expenditure_df= pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/Add_Gov_Expenditure.csv")
+life_exp_df   = pd.read_csv("data/Life-Expectancy-Data-Updated.csv")
+gov_metrics_df = pd.read_csv("data/World_Bank_data.csv")
+healthcare_access_df = pd.read_csv("data/HealthcareAccess.csv")
+water_quality_df = pd.read_csv("data/WaterQuality.csv")
+expenditure_df   = pd.read_csv("data/Add_Gov_Expenditure.csv")
 
-imputed_df    = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/imputed_df.csv")
-merged_df     = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/merged_df.csv")
-imputed_encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/imputed_encoded_df.csv")
+imputed_df          = pd.read_csv("data/imputed_df.csv")
+merged_df           = pd.read_csv("data/merged_df.csv")
+imputed_encoded_df  = pd.read_csv("data/imputed_encoded_df.csv")
+
+
+# Local paths (you can swap to URL version if you prefer)
+#life_exp_df   = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/Life-Expectancy-Data-Updated.csv")
+#gov_metrics_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/World_Bank_data.csv")
+#healthcare_access_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/HealthcareAccess.csv")
+#water_quality_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/WaterQuality.csv")
+#expenditure_df= pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/Add_Gov_Expenditure.csv")
+
+#imputed_df    = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/imputed_df.csv")
+#merged_df     = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/merged_df.csv")
+#imputed_encoded_df = pd.read_csv("/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/imputed_encoded_df.csv")
 
 
 
@@ -611,13 +622,13 @@ def eda_model_results_page():
             )
 
             st.image(
-                "/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/scree.png",
+                "data/scree.png",
                 caption="PCA Scree Plot: Proportion of variance explained",
                 use_container_width=True )
 
             # Biplot (bottom)
             st.image(
-                "/Users/lukehudak/MSU/FS25/CMSE 830/Final Project/biplot.png",
+                "data/biplot.png",
                 caption="PCA Biplot: PC1 vs PC2 (countries and variable loadings)",
                 use_container_width=True,
             )
